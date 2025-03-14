@@ -63,7 +63,10 @@ package eng
 		private function onEnterFrame(event:Event):void
 		{
 			if (state == STATE_WALK)
+			{
 				followTarget();
+				Collectable.checkCollisions(this);
+			}
 		}
 		
 		private function followTarget():void

@@ -18,11 +18,11 @@ package behaviors
 		
 		protected function iterateLabels():void
 		{
-			for each (var label:FrameLabel in this.currentLabels)
-				trace(label.name);
-			
-			for each (label in this.currentLabels)
+			for each (var label:FrameLabel in currentLabels)
 				processLabel(label);
+			
+//			for each (label in this.currentLabels)
+//				trace(label.name);
 		}
 		
 		protected function processLabel(label:FrameLabel):void
@@ -74,6 +74,16 @@ package behaviors
 			for each (var labelName:String in labelsToSearch)
 				if (label.name.substr(0, labelName.length) == labelName)
 					return label.name.substring(labelName.length, label.name.length);
+			
+			return null;
+		}
+		
+		protected function findFirstExistingLabel(labelsToSearch:Array /* of String */):FrameLabel
+		{
+			for each (var label:FrameLabel in currentLabels)
+				for each (var labelName:String in labelsToSearch)
+					if (label.name.substr(0, labelName.length) == labelName)
+						return label;
 			
 			return null;
 		}
