@@ -54,4 +54,4 @@ lerna-debug.log*
 *.sw?
 
 
-RECOVER_Template.fla
+RECOVER_*.fla
