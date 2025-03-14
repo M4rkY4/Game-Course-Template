@@ -9,7 +9,7 @@ package behaviors
 	{
 		protected static const STOPS:Array /* of String */ = ["stop", "стоп", "STOP", "СТОП"];
 		protected static const REWINDS:Array /* of String */ = ["rewind", "перемотка", "REWIND", "ПЕРЕМОТКА"];
-		protected static const LOOP:Array /* of String */ = ["loop", "цикл", "LOOP", "ЦИКЛ"];
+		protected static const LOOP:Array /* of String */ = ["loop_", "цикл_", "LOOP_", "ЦИКЛ_", "go_", "до_"];
 		
 		public function Commanded()
 		{
@@ -45,7 +45,7 @@ package behaviors
 			{
 				addFrameScript(label.frame - 1, function loop():void
 				{
-					gotoAndStop(param);
+					gotoAndPlay(param);
 				});
 				return;
 			}

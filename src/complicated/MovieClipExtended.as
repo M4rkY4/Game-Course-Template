@@ -9,7 +9,7 @@ package complicated
 		{
 		}
 		
-		protected function parentNonLayer():DisplayObjectContainer
+		protected function get parentNonLayer():DisplayObjectContainer
 		{
 			var result:DisplayObjectContainer = parent;
 			if (! result) return null;
@@ -23,6 +23,6 @@ package complicated
 			return result ? result : parent;
 		}
 		
-		static internal function get main():Main { return Main.instance }
+		static protected function get main():Main { return Main.instance }
 	}
 }
