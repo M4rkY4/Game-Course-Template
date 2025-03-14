@@ -1,13 +1,12 @@
 package eng
 {
-	import complicated.Main;
+	import complicated.SimpleButtonExtended;
 	
 	import flash.display.MovieClip;
-	import flash.display.SimpleButton;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class Button extends SimpleButton
+	public class Button extends SimpleButtonExtended
 	{
 		public function Button()
 		{
@@ -17,9 +16,7 @@ package eng
 		
 		private function onClick(event:MouseEvent):void
 		{
-			var parentMC:MovieClip = Main.isAdvancedLayers
-				? parent.parent as MovieClip
-				: parent as MovieClip;
+			var parentMC:MovieClip = parentNonLayer as MovieClip;
 			
 			if (parentMC /*&& parentMC.currentFrame < parentMC.totalFrames*/) parentMC.play();
 			/** @link https://helpx.adobe.com/au/animate/using/timeline-layers.html */

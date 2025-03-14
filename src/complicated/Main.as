@@ -2,11 +2,9 @@ package complicated
 {
 	import behaviors.Commanded;
 	
-	import flash.display.FrameLabel;
-	
-	import flash.display.MovieClip;
-	import flash.display.Scene;
 	import flash.events.Event;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	public class Main extends Commanded
 	{
@@ -39,9 +37,22 @@ package complicated
 		
 		}
 		
-		public static function get isAdvancedLayers():Boolean
+		public function warnAboutAdvancedLayers():void
 		{
-			return CONFIG::ADVANCED_LAYERS;
+			const warningText:String = "УВАГА:\nВідключіть покращені шари (AdvancedLayers) в файлі .FLA в налаштуваннях документа або не тримайте в такому шарі кнопку!";
+			
+			trace(warningText);
+			
+			var textFormat:TextFormat = new TextFormat(null, 20, 0xFF0000, true);
+			var textField:TextField = new TextField();
+			textField.defaultTextFormat = textFormat;
+			textField.wordWrap = true;
+			textField.text = warningText;
+			textField.width = 400;
+			textField.height = 400;
+			textField.x = 20;
+			textField.y = 20;
+			addChild(textField);
 		}
 	}
 }

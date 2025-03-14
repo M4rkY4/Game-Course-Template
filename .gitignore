@@ -52,3 +52,6 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+
+RECOVER_Template.fla
