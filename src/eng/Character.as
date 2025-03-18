@@ -9,7 +9,7 @@ package eng
 		private static const STATE_STILL:String = "still";
 		private static const STATE_WALK:String = "walk";
 		
-		private static const SPEED:Number = 4;
+		private static const SPEED:Number = НАЛАШТУВАННЯ.ШВИДКІСТЬ_ПЕРСОНАЖА;
 		
 		private var _state:String = STATE_STILL;
 		

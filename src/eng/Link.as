@@ -4,19 +4,19 @@ package eng
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class Connector extends Controlled
+	public class Link extends Controlled
 	{
 		private static const SUFFIX_ENTRY:String = "_1";
 		private static const SUFFIX_EXIT:String = "_2";
 		
 		private static var _instances:Array /* of this */ = [];
 		
-		private var _pair:Connector;
+		private var _pair:Link;
 		
 		private var _isEntry:Boolean;
 		private var _isExit:Boolean;
 		
-		public function Connector()
+		public function Link()
 		{
 			_instances.push(this);
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
@@ -48,11 +48,16 @@ package eng
 			
 			_pair._pair = this;
 			
-			var entry:Connector = _isEntry ? this : _pair;
-			var exit:Connector = _isExit ? this : _pair;
+			var entry:Link = _isEntry ? this : _pair;
+			var exit:Link = _isExit ? this : _pair;
 			
 			// if no play label, we use stop-play
-			var label:FrameLabel = exit.findFirstExistingLabel(Labels.ACT);
+			
+			var label:FrameLabel = entry.findFirstExistingLabel(Labels.ACT);
+			if (! label)
+				entry.stop();
+			
+			label = exit.findFirstExistingLabel(Labels.ACT);
 			if (! label)
 				exit.stop();
 			
@@ -66,7 +71,14 @@ package eng
 		
 		private function onClick(event:MouseEvent):void
 		{
-			var label:FrameLabel = _pair.findFirstExistingLabel(Labels.ACT);
+			var label:FrameLabel = findFirstExistingLabel(Labels.ACT);
+			
+			if (label)
+				gotoAndPlay(label.name);
+			else
+				play();
+			
+			label = _pair.findFirstExistingLabel(Labels.ACT);
 			
 			if (label)
 				_pair.gotoAndPlay(label.name);
@@ -74,7 +86,7 @@ package eng
 				_pair.play();
 		}
 		
-		private function findPair():Connector
+		private function findPair():Link
 		{
 			var indexIn:int = name.indexOf(SUFFIX_ENTRY);
 			var indexOut:int = name.indexOf(SUFFIX_EXIT);
@@ -96,7 +108,7 @@ package eng
 			while (i > 0)
 			{
 				--i;
-				var supposedPair:Connector = _instances[i];
+				var supposedPair:Link = _instances[i];
 				if (supposedPair != this && supposedPair.name == pairExpectedName)
 					return supposedPair;
 				
