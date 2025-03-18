@@ -1,6 +1,9 @@
 package
 {
-	import complicated.MovieClipExtended;
+	import eng.Clip;
 	
-	public class Кліп extends MovieClipExtended { }
+	public class Кліп extends Clip
+	{
+	
+	}
 }

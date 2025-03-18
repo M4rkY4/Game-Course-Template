@@ -1,6 +1,6 @@
 package eng
 {
-	import behaviors.Commanded;
+	import eng.Labels;
 	
 	import flash.display.FrameLabel;
 	
@@ -8,10 +8,8 @@ package eng
 	
 	import flash.events.Event;
 	
-	public class Collectable extends Commanded
+	public class Collectable extends Controlled
 	{
-		protected static const LABELS_OFF:Array /* of String */ = ["off", "OFF", "колізія", "нема"];
-		
 		private static var _instances:Array /* of Collectable */ = [];
 		
 		public static function checkCollisions(target:MovieClip):Array /* of Collectable */
@@ -56,7 +54,7 @@ package eng
 			
 			_state = STATE_OFF;
 			
-			var label:FrameLabel = findFirstExistingLabel(LABELS_OFF);
+			var label:FrameLabel = findFirstExistingLabel(Labels.LABELS_OFF);
 			
 			if (label)
 				gotoAndPlay(label.name);

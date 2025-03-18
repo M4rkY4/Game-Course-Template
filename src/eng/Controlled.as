@@ -1,17 +1,16 @@
-package behaviors
+package eng
 {
 	import complicated.MovieClipExtended;
 	
-	import flash.display.FrameLabel;
-	import flash.display.MovieClip;
+	import eng.Labels;
 	
-	public class Commanded extends MovieClipExtended
+	import flash.display.FrameLabel;
+	
+	public class Controlled extends MovieClipExtended
 	{
-		protected static const STOPS:Array /* of String */ = ["stop", "стоп", "STOP", "СТОП"];
-		protected static const REWINDS:Array /* of String */ = ["rewind", "перемотка", "REWIND", "ПЕРЕМОТКА"];
-		protected static const LOOP:Array /* of String */ = ["loop_", "цикл_", "LOOP_", "ЦИКЛ_", "go_", "до_"];
 		
-		public function Commanded()
+		
+		public function Controlled()
 		{
 			iterateLabels();
 		}
@@ -27,20 +26,20 @@ package behaviors
 		
 		protected function processLabel(label:FrameLabel):void
 		{
-			if (isFound(label, STOPS))
+			if (isFound(label, Labels.STOPS))
 			{
 				addFrameScript(label.frame - 1, stop);
 //				trace("Added stops at " + label.frame);
 				return;
 			}
 			
-			if (isFound(label, REWINDS))
+			if (isFound(label, Labels.REWINDS))
 			{
 				addFrameScript(label.frame - 1, rewind);
 				return;
 			}
 			
-			var param:String = isFoundWithParam(label, LOOP);
+			var param:String = isFoundWithParam(label, Labels.LOOP);
 			if (param)
 			{
 				addFrameScript(label.frame - 1, function loop():void

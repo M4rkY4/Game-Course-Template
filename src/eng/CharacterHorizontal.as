@@ -4,7 +4,7 @@ package eng
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	public class Character extends Controlled
+	public class CharacterHorizontal extends Controlled
 	{
 		private static const STATE_STILL:String = "still";
 		private static const STATE_WALK:String = "walk";
@@ -14,12 +14,10 @@ package eng
 		private var _state:String = STATE_STILL;
 		
 		private var _targetX:Number;
-		private var _targetY:Number;
 		
-		public function Character()
+		public function CharacterHorizontal()
 		{
 			_targetX = x;
-			_targetY = y;
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
@@ -37,10 +35,9 @@ package eng
 		private function onGameClick(event:MouseEvent):void
 		{
 			_targetX = main.mouseX;
-			_targetY = main.mouseY;
 			
 			var posGlobal:Point = localToGlobal(new Point());
-			var isAtTarget:Boolean = (_targetX - posGlobal.x) * (_targetX - posGlobal.x) + (_targetY - posGlobal.y) * (_targetY - posGlobal.y) < SPEED * SPEED;
+			var isAtTarget:Boolean = Math.abs(_targetX - posGlobal.x) < SPEED;
 			
 			state = isAtTarget ? STATE_STILL : STATE_WALK;
 		}
@@ -70,10 +67,9 @@ package eng
 		private function followTarget():void
 		{
 			var targetX:Number = _targetX;
-			var targetY:Number = _targetY;
 			
 			var posGlobal:Point = localToGlobal(new Point());
-			var isAtTarget:Boolean = (targetX - posGlobal.x) * (targetX - posGlobal.x) + (targetY - posGlobal.y) * (targetY - posGlobal.y) < SPEED * SPEED;
+			var isAtTarget:Boolean = Math.abs(targetX - posGlobal.x) < SPEED;
 			
 			if (isAtTarget)
 			{
@@ -86,11 +82,6 @@ package eng
 				speedGlobal.x = 0;
 			else
 				speedGlobal.x = targetX > posGlobal.x ? SPEED : -SPEED;
-			
-			if (Math.abs(targetY - posGlobal.y) < SPEED)
-				speedGlobal.y = 0;
-			else
-				speedGlobal.y = targetY > posGlobal.y ? SPEED : -SPEED;
 			
 			var speedLocal:Point = parent.globalToLocal(speedGlobal);
 			x += speedLocal.x;

@@ -1,12 +1,13 @@
 package complicated
 {
-	import behaviors.Commanded;
+	import eng.Controlled;
+	import eng.Labels;
 	
 	import flash.events.Event;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	public class Main extends Commanded
+	public class Main extends Controlled
 	{
 		static internal var instance:Main;
 		
@@ -24,7 +25,7 @@ package complicated
 			if (_lastStopScene == currentScene.name && _lastStopFrame == currentFrame)
 				return;
 			
-			if (isFoundString(currentFrameLabel, STOPS))
+			if (isFoundString(currentFrameLabel, Labels.STOPS))
 			{
 				_lastStopScene = currentScene.name;
 				_lastStopFrame = currentFrame;
