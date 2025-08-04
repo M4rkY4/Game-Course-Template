@@ -39,6 +39,13 @@ package eng
 				return;
 			}
 			
+			if (isFound(label, Labels.EXEC))
+			{
+				trace("EXEC FND");
+				addFrameScript(label.frame - 1, executeCustom);
+				return;
+			}
+			
 			var param:String = isFoundWithParam(label, Labels.LOOP);
 			if (param)
 			{
@@ -85,6 +92,11 @@ package eng
 						return label;
 			
 			return null;
+		}
+		
+		protected function executeCustom():void
+		{
+		
 		}
 		
 		protected function rewind():void { gotoAndStop(1); }

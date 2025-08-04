@@ -1,7 +1,5 @@
 package eng
 {
-	import eng.Labels;
-	
 	import flash.display.FrameLabel;
 	
 	import flash.display.MovieClip;
@@ -60,6 +58,12 @@ package eng
 				gotoAndPlay(label.name);
 			else
 				visible = false;
+		}
+		
+		protected override function executeCustom():void
+		{
+			_state = STATE_ON;
+			visible = true;
 		}
 		
 		private function onRemoved(event:Event):void
