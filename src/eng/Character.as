@@ -43,6 +43,8 @@ package eng
 			var isAtTarget:Boolean = (_targetX - posGlobal.x) * (_targetX - posGlobal.x) + (_targetY - posGlobal.y) * (_targetY - posGlobal.y) < SPEED * SPEED;
 			
 			state = isAtTarget ? STATE_STILL : STATE_WALK;
+			
+			scaleX = Math.abs(scaleX) * (x > _targetX ? -1 : 1);
 		}
 		
 		private function set state(value:String):void

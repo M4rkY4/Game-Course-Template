@@ -53,6 +53,8 @@ package eng
 			var speedLocal:Point = parent.globalToLocal(speedGlobal);
 			x += speedLocal.x;
 			y += speedLocal.y;
+			
+			scaleX = Math.abs(scaleX) * (x > targetX ? -1 : 1);
 		}
 		
 		private function onRemoved(event:Event):void
