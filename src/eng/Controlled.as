@@ -41,7 +41,6 @@ package eng
 			
 			if (isFound(label, Labels.EXEC))
 			{
-				trace("EXEC FND");
 				addFrameScript(label.frame - 1, executeCustom);
 				return;
 			}

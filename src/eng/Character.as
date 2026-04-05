@@ -6,10 +6,26 @@ package eng
 	
 	public class Character extends Controlled
 	{
+		internal static var instance:Character;
+		
+		static internal var isLeft:Boolean = false;
+		static internal var isRight:Boolean = false;
+		static internal var isUp:Boolean = false;
+		static internal var isDown:Boolean = false;
+		
+		static internal var isLeftAvailable:Boolean = false;
+		static internal var isRightAvailable:Boolean = false;
+		static internal var isUpAvailable:Boolean = false;
+		static internal var isDownAvailable:Boolean = false;
+		
+		static internal var isMoving:Boolean = false;
+		
 		private static const STATE_STILL:String = "still";
 		private static const STATE_WALK:String = "walk";
 		
 		private static const SPEED:Number = НАЛАШТУВАННЯ.ШВИДКІСТЬ_ПЕРСОНАЖА;
+		
+		internal var speed:Number = 5;
 		
 		private var _state:String = STATE_STILL;
 		
@@ -18,6 +34,8 @@ package eng
 		
 		public function Character()
 		{
+			instance = this;
+			
 			_targetX = x;
 			_targetY = y;
 			
@@ -36,6 +54,8 @@ package eng
 		
 		private function onGameClick(event:MouseEvent):void
 		{
+			isMoving = true;
+			
 			_targetX = main.mouseX;
 			_targetY = main.mouseY;
 			
@@ -43,8 +63,6 @@ package eng
 			var isAtTarget:Boolean = (_targetX - posGlobal.x) * (_targetX - posGlobal.x) + (_targetY - posGlobal.y) * (_targetY - posGlobal.y) < SPEED * SPEED;
 			
 			state = isAtTarget ? STATE_STILL : STATE_WALK;
-			
-			scaleX = Math.abs(scaleX) * (x > _targetX ? -1 : 1);
 		}
 		
 		private function set state(value:String):void
@@ -62,11 +80,66 @@ package eng
 		
 		private function onEnterFrame(event:Event):void
 		{
+			checkWallCollisions();
+			
+			isLeft = isLeft && isLeftAvailable;
+			isRight = isRight && isRightAvailable;
+			isUp = isUp && isUpAvailable;
+			isDown = isDown && isDownAvailable;
+			
+			if (isLeft || isRight || isUp || isDown)
+			{
+				state = STATE_WALK
+				if (isLeft) x -= speed;
+				if (isRight) x += speed;
+				if (isUp) y -= speed;
+				if (isDown) y += speed;
+				checkFoodCollisions();
+				return;
+			}
+			else if (state == STATE_WALK && ! isMoving)
+			{
+				state = STATE_STILL;
+			}
+			
 			if (state == STATE_WALK)
 			{
 				followTarget();
-				Collectable.checkCollisions(this);
+				checkFoodCollisions();
 			}
+		}
+		
+		private function checkWallCollisions():void
+		{
+			isLeftAvailable = isRightAvailable = isUpAvailable = isDownAvailable = true;
+			
+			var obstacles:Array = Obstacle._obstaclesActive;
+			
+			var i:int = obstacles.length;
+			while (i > 0)
+			{
+				--i;
+				var obstacle:Obstacle = obstacles[i];
+				if (this.hitTestObject(obstacle))
+				{
+					isLeftAvailable = isLeftAvailable && ! obstacle.hitTestPoint(x - 40, y);
+					isRightAvailable = isRightAvailable && ! obstacle.hitTestPoint(x + 40, y);
+					isUpAvailable = isUpAvailable && ! obstacle.hitTestPoint(x, y - 60);
+					isDownAvailable = isDownAvailable && ! obstacle.hitTestPoint(x, y + 60);
+				}
+			}
+		}
+		
+		private function checkFoodCollisions():void
+		{
+			var collisions:Array = Collectable.checkCollisions(this);
+			if (collisions && collisions.length > 0)
+				playCollision();
+		}
+		
+		private function playCollision():void
+		{
+			gotoAndPlay("eat");
 		}
 		
 		private function followTarget():void
@@ -79,6 +152,7 @@ package eng
 			
 			if (isAtTarget)
 			{
+				isMoving = false;
 				state = STATE_STILL;
 				return;
 			}
@@ -95,6 +169,12 @@ package eng
 				speedGlobal.y = targetY > posGlobal.y ? SPEED : -SPEED;
 			
 			var speedLocal:Point = parent.globalToLocal(speedGlobal);
+			
+			if (! isLeftAvailable && speedLocal.x < 0) speedLocal.x = 0;
+			if (! isRightAvailable && speedLocal.x > 0) speedLocal.x = 0;
+			if (! isUpAvailable && speedLocal.y < 0) speedLocal.y = 0;
+			if (! isDownAvailable && speedLocal.y > 0) speedLocal.y = 0;
+			
 			x += speedLocal.x;
 			y += speedLocal.y;
 		}

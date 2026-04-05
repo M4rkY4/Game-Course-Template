@@ -1,9 +1,7 @@
 package eng
 {
 	import flash.display.FrameLabel;
-	
 	import flash.display.MovieClip;
-	
 	import flash.events.Event;
 	
 	public class Collectable extends Controlled
@@ -51,6 +49,9 @@ package eng
 			if (_state == STATE_OFF) return;
 			
 			_state = STATE_OFF;
+			
+//			CollectedCounter.increment();
+			CollectedCounter.instance.count++;
 			
 			var label:FrameLabel = findFirstExistingLabel(Labels.LABELS_OFF);
 			
